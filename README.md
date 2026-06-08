@@ -25,7 +25,7 @@ A comprehensive DeFi operations Skill for the [Pharos](https://www.pharos.xyz/) 
 ```bash
 # Install alongside pharos-skill-engine
 npx skills add https://github.com/PharosNetwork/pharos-skill-engine
-npx skills add https://github.com/xiaoxin/pharos-defi-skill
+npx skills add https://github.com/xiaoxin1104/pharos-defi-skill
 
 # Discover deployed contracts
 chmod +x scripts/*.sh
