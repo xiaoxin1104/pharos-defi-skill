@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================
 # pharos-defi — Portfolio Overview
 # Usage: ./portfolio.sh [network] [address]

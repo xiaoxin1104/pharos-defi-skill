@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================
 # pharos-defi — DCA Strategy Executor
 # Usage: ./dca.sh <network> <token_in> <token_out> <amount> [--setup]

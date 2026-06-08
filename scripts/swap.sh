@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================
 # pharos-defi — Automated Token Swap
 # Usage: ./swap.sh <network> <token_in> <token_out> <amount> [slippage]

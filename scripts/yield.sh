@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================
 # pharos-defi — Pool Yield Analyzer
 # Usage: ./yield.sh [network] [pair_address]

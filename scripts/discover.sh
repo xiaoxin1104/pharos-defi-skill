@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ============================================================
 # pharos-defi — Contract Discovery
 # Checks which DEX contracts are deployed on the target network
