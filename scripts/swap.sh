@@ -64,9 +64,9 @@ if [ -z "$TOKEN_IN_SYMBOL" ] || [ -z "$TOKEN_OUT_SYMBOL" ] || [ -z "$AMOUNT_HUMA
     exit 1
 fi
 
-echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"
 echo -e "${CYAN}  Pharos DeFi 閳=Token Swap${NC}"
-echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"
 echo -e "  Network:  ${GREEN}$NETWORK${NC} (chain $CHAIN_ID)"
 echo -e "  From:     ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL${NC}"
 echo -e "  To:       ${YELLOW}$TOKEN_OUT_SYMBOL${NC}"
@@ -103,7 +103,7 @@ DIRECT=$(cast call "$FACTORY" "getPair(address,address)(address)" "$TOKEN_IN" "$
 
 if [ "$DIRECT" != "0x0000000000000000000000000000000000000000" ]; then
     PATH="[$TOKEN_IN,$TOKEN_OUT]"
-    echo -e "  ${GREEN}閴=Direct pair found${NC}"
+    echo -e "  ${GREEN}[OK]Direct pair found${NC}"
 else
     PATH="[$TOKEN_IN,$WETH,$TOKEN_OUT]"
     echo -e "  ${YELLOW}閳=No direct pair, routing via WETH${NC}"
@@ -115,7 +115,7 @@ QUOTE=$(cast call "$ROUTER" "getAmountsOut(uint256,address[])(uint256[])" "$AMOU
 EXPECTED_OUT=$(echo "$QUOTE" | sed -n '$p' | tr -d '[:space:]')
 
 if [ -z "$EXPECTED_OUT" ] || [ "$EXPECTED_OUT" = "0" ]; then
-    echo -e "${RED}閴=Quote failed 閳=pair may not exist or amount too large${NC}"
+    echo -e "${RED}[OK]Quote failed 閳=pair may not exist or amount too large${NC}"
     exit 1
 fi
 
@@ -141,7 +141,7 @@ echo -e "${CYAN}Pre-flight checks...${NC}"
 
 # Check PRIVATE_KEY
 if [ -z "${PRIVATE_KEY:-}" ]; then
-    echo -e "${RED}閴=PRIVATE_KEY not set. Run: export PRIVATE_KEY=<your_key>${NC}"
+    echo -e "${RED}[OK]PRIVATE_KEY not set. Run: export PRIVATE_KEY=<your_key>${NC}"
     exit 1
 fi
 
@@ -153,7 +153,7 @@ if [ "$NETWORK" = "mainnet" ]; then
     read -p "Type ''yes'' to confirm: " CONFIRM
     if [ "$CONFIRM" != "yes" ]; then echo "Aborted."; exit 1; fi
 else
-    echo -e "  ${GREEN}閴=Testnet (safe)${NC}"
+    echo -e "  ${GREEN}[OK]Testnet (safe)${NC}"
 fi
 
 # Balance check
@@ -166,7 +166,7 @@ BALANCE_HUMAN=$(from_wei "$BALANCE" "$DECIMALS_IN")
 echo -e "  Balance:  ${GREEN}$BALANCE_HUMAN $TOKEN_IN_SYMBOL${NC}"
 
 if [ "$BALANCE" -lt "$AMOUNT_WEI" ]; then
-    echo -e "${RED}閴=Insufficient balance!${NC}"
+    echo -e "${RED}[OK]Insufficient balance!${NC}"
     exit 1
 fi
 
@@ -177,7 +177,7 @@ if ! $IS_NATIVE_IN; then
         echo -e "  ${YELLOW}Approving $TOKEN_IN for Router...${NC}"
         cast send "$TOKEN_IN" "approve(address,uint256)(bool)" "$ROUTER" "$AMOUNT_WEI" \
             --private-key "$PRIVATE_KEY" --rpc-url "$RPC_URL" --legacy 2>/dev/null
-        echo -e "  ${GREEN}閴=Approved${NC}"
+        echo -e "  ${GREEN}[OK]Approved${NC}"
     fi
 fi
 
@@ -207,12 +207,12 @@ fi
 TX_HASH=$(echo "$TX" | grep -oP 'transactionHash.*=\K0x[a-fA-F0-9]{64}' || echo "$TX" | grep -oP '0x[a-fA-F0-9]{64}' | head -1)
 
 if [ -z "$TX_HASH" ]; then
-    echo -e "${RED}閴=Swap failed:${NC}"
+    echo -e "${RED}[OK]Swap failed:${NC}"
     echo "$TX"
     exit 1
 fi
 
-echo -e "${GREEN}閴=Swap executed!${NC}"
+echo -e "${GREEN}[OK]Swap executed!${NC}"
 echo -e "  TX: ${CYAN}$TX_HASH${NC}"
 echo ""
 
@@ -238,6 +238,6 @@ if ! $IS_NATIVE_OUT; then
 fi
 
 echo ""
-echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
-echo -e "${GREEN}  Swap Complete 閴={NC}"
-echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"
+echo -e "${GREEN}  Swap Complete [OK]{NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"

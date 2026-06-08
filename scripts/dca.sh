@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# ============================================================
-# pharos-defi --DCA Strategy Executor
-# Usage: ./dca.sh <network> <token_in> <token_out> <amount> [--setup]
-# ============================================================
+# pharos-defi -- DCA Strategy Executor
 set -euo pipefail
 
 GREEN=$'\033[0;32m'
@@ -15,18 +12,19 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
 
 NETWORK="${1:-atlantic-testnet}"
-TOKEN_IN_SYMBOL="${2:-}"
-TOKEN_OUT_SYMBOL="${3:-}"
-AMOUNT_HUMAN="${4:-}"
-MODE="${5:-}"
+MODE="${2:-}"
+
+echo_header() { echo -e "${CYAN}$1${NC}"; }
+echo_ok()    { echo -e "${GREEN}$1${NC}"; }
+echo_warn()  { echo -e "${YELLOW}$1${NC}"; }
+echo_err()   { echo -e "${RED}$1${NC}"; }
 
 if [ "$MODE" = "--setup" ]; then
-    echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"
-    echo -e "${CYAN}  Pharos DeFi --DCA Setup${NC}"
-    echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜==={NC}"
+    echo_header "==========================================="
+    echo_header "  Pharos DeFi -- DCA Setup"
+    echo_header "==========================================="
     echo ""
-    echo -e "DCA (Dollar Cost Averaging) automates periodic buys."
-    echo -e "This script will create a config file for cron/systemd."
+    echo "DCA (Dollar Cost Averaging) automates periodic buys."
     echo ""
 
     read -p "Token to spend (e.g., PHRS): " TOKEN_IN_SYMBOL
@@ -37,7 +35,6 @@ if [ "$MODE" = "--setup" ]; then
     read -p "Slippage % [0.5]: " SLIPPAGE
     SLIPPAGE="${SLIPPAGE:-0.5}"
 
-    # Convert frequency to seconds
     case $FREQ in
         daily)    INTERVAL=86400 ;;
         weekly)   INTERVAL=604800 ;;
@@ -46,10 +43,8 @@ if [ "$MODE" = "--setup" ]; then
         *) echo "Unknown frequency: $FREQ"; exit 1 ;;
     esac
 
-    # Calculate total spend
     TOTAL_SPEND=$(echo "scale=2; $AMOUNT_HUMAN * $TOTAL_BUYS" | bc)
 
-    # Create DCA config
     cat > "$SKILL_DIR/dca_config.json" << EOF
 {
   "network": "$NETWORK",
@@ -67,98 +62,89 @@ if [ "$MODE" = "--setup" ]; then
 EOF
 
     echo ""
-    echo -e "${GREEN}===DCA Configuration ==={NC}"
-    echo -e "  Buy:       ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL --$TOKEN_OUT_SYMBOL${NC}"
-    echo -e "  Frequency: ${YELLOW}$FREQ${NC}"
-    echo -e "  Total:     ${YELLOW}$TOTAL_BUYS buys${NC}"
-    echo -e "  Total spend: ${YELLOW}$TOTAL_SPEND $TOKEN_IN_SYMBOL${NC}"
+    echo_header "=== DCA Configuration ==="
+    echo "  Buy:       $AMOUNT_HUMAN $TOKEN_IN_SYMBOL -> $TOKEN_OUT_SYMBOL"
+    echo "  Frequency: $FREQ"
+    echo "  Total:     $TOTAL_BUYS buys"
+    echo "  Total spend: $TOTAL_SPEND $TOKEN_IN_SYMBOL"
     echo ""
-    echo -e "${CYAN}Config saved to dca_config.json${NC}"
+    echo "Config saved to dca_config.json"
     echo ""
-    echo -e "To run a single DCA buy manually:"
-    echo -e "  ${GREEN}cd $SKILL_DIR && ./scripts/dca.sh --execute${NC}"
+    echo "To run a single DCA buy:"
+    echo "  ./scripts/dca.sh atlantic-testnet --execute"
     echo ""
-    echo -e "To automate (cron):"
-    echo -e "  ${GREEN}crontab -e${NC} then add:"
-    echo -e "  ${GREEN}0 10 * * 1 cd $SKILL_DIR && ./scripts/dca.sh --execute >> dca.log 2>&1${NC}"
-    echo ""
+    echo "To check status:"
+    echo "  ./scripts/dca.sh atlantic-testnet --status"
 
 elif [ "$MODE" = "--execute" ] || [ "$MODE" = "--exec" ]; then
-    # Execute a single DCA buy
     if [ ! -f "$SKILL_DIR/dca_config.json" ]; then
-        echo -e "${RED}No DCA config found. Run: ./dca.sh --setup${NC}"
+        echo_err "No DCA config found. Run: ./scripts/dca.sh atlantic-testnet --setup"
         exit 1
     fi
 
-    TOKEN_IN_SYMBOL=$(jq -r ''.tokenIn'' "$SKILL_DIR/dca_config.json")
-    TOKEN_OUT_SYMBOL=$(jq -r ''.tokenOut'' "$SKILL_DIR/dca_config.json")
-    AMOUNT_HUMAN=$(jq -r ''.amountPerBuy'' "$SKILL_DIR/dca_config.json")
-    NETWORK=$(jq -r ''.network'' "$SKILL_DIR/dca_config.json")
-    SLIPPAGE=$(jq -r ''.slippage'' "$SKILL_DIR/dca_config.json")
-
-    EXECUTIONS=$(jq -r ''.executions'' "$SKILL_DIR/dca_config.json")
-    TOTAL=$(jq -r ''.totalBuys'' "$SKILL_DIR/dca_config.json")
+    TOKEN_IN_SYMBOL=$(jq -r '.tokenIn' "$SKILL_DIR/dca_config.json")
+    TOKEN_OUT_SYMBOL=$(jq -r '.tokenOut' "$SKILL_DIR/dca_config.json")
+    AMOUNT_HUMAN=$(jq -r '.amountPerBuy' "$SKILL_DIR/dca_config.json")
+    SLIPPAGE=$(jq -r '.slippage' "$SKILL_DIR/dca_config.json")
+    EXECUTIONS=$(jq -r '.executions' "$SKILL_DIR/dca_config.json")
+    TOTAL=$(jq -r '.totalBuys' "$SKILL_DIR/dca_config.json")
 
     if [ "$EXECUTIONS" -ge "$TOTAL" ]; then
-        echo -e "${GREEN}DCA complete! $TOTAL/$TOTAL buys executed.${NC}"
+        echo_ok "DCA complete! $TOTAL/$TOTAL buys executed."
         exit 0
     fi
 
-    echo -e "${CYAN}===DCA Buy #$((EXECUTIONS + 1))/$TOTAL ==={NC}"
-    echo -e "  $(date -Iseconds)"
+    echo_header "=== DCA Buy #$((EXECUTIONS + 1))/$TOTAL ==="
+    echo "  $(date -Iseconds)"
     echo ""
 
-    # Execute swap via swap.sh
     bash "$SCRIPT_DIR/swap.sh" "$NETWORK" "$TOKEN_IN_SYMBOL" "$TOKEN_OUT_SYMBOL" "$AMOUNT_HUMAN" "$SLIPPAGE"
 
-    # Update execution count
     NEW_COUNT=$((EXECUTIONS + 1))
     jq ".executions = $NEW_COUNT" "$SKILL_DIR/dca_config.json" > "$SKILL_DIR/dca_config.tmp" && \
         mv "$SKILL_DIR/dca_config.tmp" "$SKILL_DIR/dca_config.json"
 
-    echo -e "${GREEN}DCA buy $NEW_COUNT/$TOTAL completed [OK]{NC}"
+    echo_ok "DCA buy $NEW_COUNT/$TOTAL completed [OK]"
 
     if [ "$NEW_COUNT" -ge "$TOTAL" ]; then
-        echo -e "${GREEN}===DCA Complete! ==={NC}"
-        echo -e "All $TOTAL buys executed."
-        echo -e "Run ./scripts/portfolio.sh to see results."
+        echo_header "=== DCA Complete! ==="
+        echo "All $TOTAL buys executed."
     fi
 
 elif [ "$MODE" = "--status" ]; then
     if [ ! -f "$SKILL_DIR/dca_config.json" ]; then
-        echo -e "${YELLOW}No DCA config found. Run: ./dca.sh --setup${NC}"
+        echo_warn "No DCA config found. Run: ./scripts/dca.sh atlantic-testnet --setup"
         exit 0
     fi
 
-    echo -e "${CYAN}===DCA Status ==={NC}"
-    TOKEN_IN_SYMBOL=$(jq -r ''.tokenIn'' "$SKILL_DIR/dca_config.json")
-    TOKEN_OUT_SYMBOL=$(jq -r ''.tokenOut'' "$SKILL_DIR/dca_config.json")
-    AMOUNT=$(jq -r ''.amountPerBuy'' "$SKILL_DIR/dca_config.json")
-    FREQ=$(jq -r ''.frequency'' "$SKILL_DIR/dca_config.json")
-    EXECUTIONS=$(jq -r ''.executions'' "$SKILL_DIR/dca_config.json")
-    TOTAL=$(jq -r ''.totalBuys'' "$SKILL_DIR/dca_config.json")
-    TOTAL_SPEND=$(jq -r ''.totalSpend'' "$SKILL_DIR/dca_config.json")
-    CREATED=$(jq -r ''.created'' "$SKILL_DIR/dca_config.json")
+    echo_header "=== DCA Status ==="
+    TOKEN_IN_SYMBOL=$(jq -r '.tokenIn' "$SKILL_DIR/dca_config.json")
+    TOKEN_OUT_SYMBOL=$(jq -r '.tokenOut' "$SKILL_DIR/dca_config.json")
+    AMOUNT=$(jq -r '.amountPerBuy' "$SKILL_DIR/dca_config.json")
+    FREQ=$(jq -r '.frequency' "$SKILL_DIR/dca_config.json")
+    EXECUTIONS=$(jq -r '.executions' "$SKILL_DIR/dca_config.json")
+    TOTAL=$(jq -r '.totalBuys' "$SKILL_DIR/dca_config.json")
+    CREATED=$(jq -r '.created' "$SKILL_DIR/dca_config.json")
 
-    echo -e "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL --$TOKEN_OUT_SYMBOL"
-    echo -e "  Frequency: $FREQ"
-    echo -e "  Progress:  ${GREEN}$EXECUTIONS/$TOTAL${NC} buys"
-    echo -e "  Started:   $CREATED"
-    echo -e "  Spent:     ~$(echo "scale=2; $AMOUNT * $EXECUTIONS" | bc) $TOKEN_IN_SYMBOL"
+    echo "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL -> $TOKEN_OUT_SYMBOL"
+    echo "  Frequency: $FREQ"
+    echo "  Progress:  $EXECUTIONS/$TOTAL buys"
+    echo "  Started:   $CREATED"
+    echo "  Spent:     ~$(echo "scale=2; $AMOUNT * $EXECUTIONS" | bc) $TOKEN_IN_SYMBOL"
 
-    # Show remaining
     REMAINING=$((TOTAL - EXECUTIONS))
     if [ "$REMAINING" -gt 0 ]; then
-        echo -e "  Remaining: $REMAINING buys"
-        SPENT_SO_FAR=$(echo "scale=2; $AMOUNT * $EXECUTIONS" | bc)
         REMAINING_VALUE=$(echo "scale=2; $AMOUNT * $REMAINING" | bc)
-        echo -e "  Est. remaining spend: $REMAINING_VALUE $TOKEN_IN_SYMBOL"
+        echo "  Remaining: $REMAINING buys (est. $REMAINING_VALUE $TOKEN_IN_SYMBOL)"
     fi
 else
-    echo -e "${CYAN}Pharos DeFi --DCA Strategy${NC}"
+    echo_header "Pharos DeFi -- DCA Strategy"
     echo ""
     echo "Usage:"
-    echo "  $0 --setup      Create a new DCA strategy"
-    echo "  $0 --execute    Execute next DCA buy"
-    echo "  $0 --status     Show DCA progress"
+    echo "  $0 <network> --setup      Create a new DCA strategy"
+    echo "  $0 <network> --execute    Execute next DCA buy"
+    echo "  $0 <network> --status     Show DCA progress"
+    echo ""
+    echo "Example:"
+    echo "  $0 atlantic-testnet --setup"
 fi
