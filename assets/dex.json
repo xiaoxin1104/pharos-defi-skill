@@ -1,0 +1,45 @@
+﻿{
+  "dexType": "UniswapV2",
+  "networks": {
+    "atlantic-testnet": {
+      "factory": "0x0000000000000000000000000000000000000000",
+      "router": "0x0000000000000000000000000000000000000000",
+      "weth": "0x0000000000000000000000000000000000000000",
+      "initCodeHash": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall": "0x0000000000000000000000000000000000000000"
+    },
+    "mainnet": {
+      "factory": "0x0000000000000000000000000000000000000000",
+      "router": "0x0000000000000000000000000000000000000000",
+      "weth": "0x0000000000000000000000000000000000000000",
+      "initCodeHash": "0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f",
+      "permit2": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+      "multicall": "0x0000000000000000000000000000000000000000"
+    }
+  },
+  "abiPaths": {
+    "factory": "assets/abi/UniswapV2Factory.json",
+    "router": "assets/abi/UniswapV2Router02.json",
+    "pair": "assets/abi/UniswapV2Pair.json"
+  },
+  "verified": {
+    "atlantic-testnet": {
+      "permit2": { "address": "0x000000000022D473030F116dDEE9F6B43aC78BA3", "verified": true, "verifiedAt": "2026-06-08" }
+    },
+    "mainnet": {}
+  },
+  "setupGuide": {
+    "title": "How to populate DEX contract addresses",
+    "steps": [
+      "1. Wait for Pharos DEX (Uniswap V2 fork) to be deployed on testnet/mainnet",
+      "2. Find the Factory and Router addresses from Pharos explorer or official announcements",
+      "3. Update factory, router, and weth fields above",
+      "4. Run: cast call <factory> 'allPairsLength()(uint256)' --rpc-url <rpc> to verify",
+      "5. Run: ./scripts/swap.sh atlantic-testnet PHRS USDC 0.1 to test",
+      "6. Update 'verified' section with confirmed addresses"
+    ],
+    "autoDiscovery": "Run 'cast code <address> --rpc-url <rpc>' to check if a contract exists at an address. Non-empty result means deployed."
+  },
+  "note": "DEX contracts are not yet deployed on Pharos (chain is in early stage as of June 2026). Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) is confirmed deployed on testnet, indicating active contract infrastructure. Router/Factory/WETH addresses are placeholders — replace with actual addresses once the Pharos DEX launches. This config follows the standard Uniswap V2 interface, ensuring immediate compatibility upon deployment."
+}

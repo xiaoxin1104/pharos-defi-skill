@@ -1,0 +1,23 @@
+﻿# Pharos DeFi Skill
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# DCA log (generated at runtime)
+dca_log.csv
+dca_config.json
+
+# Sensitive
+.env
+.private_key
+*.pem
+
+# Node (if any dependencies added later)
+node_modules/
