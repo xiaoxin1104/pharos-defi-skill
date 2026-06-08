@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# pharos-defi 閳=DCA Strategy Executor
+# pharos-defi --DCA Strategy Executor
 # Usage: ./dca.sh <network> <token_in> <token_out> <amount> [--setup]
 # ============================================================
 set -euo pipefail
@@ -22,7 +22,7 @@ MODE="${5:-}"
 
 if [ "$MODE" = "--setup" ]; then
     echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
-    echo -e "${CYAN}  Pharos DeFi 閳=DCA Setup${NC}"
+    echo -e "${CYAN}  Pharos DeFi --DCA Setup${NC}"
     echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
     echo ""
     echo -e "DCA (Dollar Cost Averaging) automates periodic buys."
@@ -68,7 +68,7 @@ EOF
 
     echo ""
     echo -e "${GREEN}閳烘劏鏅查埡=DCA Configuration 閳烘劏鏅查埡={NC}"
-    echo -e "  Buy:       ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL 閳=$TOKEN_OUT_SYMBOL${NC}"
+    echo -e "  Buy:       ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL --$TOKEN_OUT_SYMBOL${NC}"
     echo -e "  Frequency: ${YELLOW}$FREQ${NC}"
     echo -e "  Total:     ${YELLOW}$TOTAL_BUYS buys${NC}"
     echo -e "  Total spend: ${YELLOW}$TOTAL_SPEND $TOKEN_IN_SYMBOL${NC}"
@@ -140,7 +140,7 @@ elif [ "$MODE" = "--status" ]; then
     TOTAL_SPEND=$(jq -r ''.totalSpend'' "$SKILL_DIR/dca_config.json")
     CREATED=$(jq -r ''.created'' "$SKILL_DIR/dca_config.json")
 
-    echo -e "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL 閳=$TOKEN_OUT_SYMBOL"
+    echo -e "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL --$TOKEN_OUT_SYMBOL"
     echo -e "  Frequency: $FREQ"
     echo -e "  Progress:  ${GREEN}$EXECUTIONS/$TOTAL${NC} buys"
     echo -e "  Started:   $CREATED"
@@ -155,7 +155,7 @@ elif [ "$MODE" = "--status" ]; then
         echo -e "  Est. remaining spend: $REMAINING_VALUE $TOKEN_IN_SYMBOL"
     fi
 else
-    echo -e "${CYAN}Pharos DeFi 閳=DCA Strategy${NC}"
+    echo -e "${CYAN}Pharos DeFi --DCA Strategy${NC}"
     echo ""
     echo "Usage:"
     echo "  $0 --setup      Create a new DCA strategy"
