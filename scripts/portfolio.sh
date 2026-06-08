@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# pharos-defi — Portfolio Overview
+# pharos-defi 閳=Portfolio Overview
 # Usage: ./portfolio.sh [network] [address]
 # Example: ./portfolio.sh atlantic-testnet
 # ============================================================
@@ -9,11 +9,11 @@ set -euo pipefail
 NETWORK="${1:-atlantic-testnet}"
 TARGET_ADDR="${2:-}"
 
-GREEN='\''\033[0;32m'\'''
-YELLOW='\''\033[1;33m'\'''
-CYAN='\''\033[0;36m'\'''
-BLUE='\''\033[0;34m'\'''
-NC='\''\033[0m'\'''
+GREEN=$'\033[0;32m'
+YELLOW=$'\033[1;33m'
+CYAN=$'\033[0;36m'
+BLUE=$'\033[0;34m'
+NC=$'\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
@@ -36,20 +36,20 @@ if [ -z "$TARGET_ADDR" ]; then
     fi
 fi
 
-echo -e "${CYAN}═════════════════════════════════════════════${NC}"
-echo -e "${CYAN}  Pharos DeFi — Portfolio Overview${NC}"
-echo -e "${CYAN}═════════════════════════════════════════════${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
+echo -e "${CYAN}  Pharos DeFi 閳=Portfolio Overview${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
 echo -e "  Network: ${GREEN}$NETWORK${NC}"
 echo -e "  Address: ${BLUE}$TARGET_ADDR${NC}"
 echo ""
 
-# ─── 1. Native Balance ─────────────────────────────────────
+# 閳光偓閳光偓閳光偓 1. Native Balance 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 NATIVE_BALANCE=$(cast balance "$TARGET_ADDR" --rpc-url "$RPC_URL" 2>/dev/null || echo "0")
 NATIVE_HUMAN=$(echo "scale=6; $NATIVE_BALANCE / 1000000000000000000" | bc)
 echo -e "${CYAN}[Native]${NC} $NATIVE: ${GREEN}$NATIVE_HUMAN${NC}"
 echo ""
 
-# ─── 2. Token Balances ─────────────────────────────────────
+# 閳光偓閳光偓閳光偓 2. Token Balances 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 echo -e "${CYAN}[Tokens]${NC}"
 echo "-------------------------------------------"
 
@@ -74,7 +74,7 @@ if [ "$TOKENS" != "null" ] && [ -n "$TOKENS" ]; then
 fi
 echo ""
 
-# ─── 3. LP Positions ───────────────────────────────────────
+# 閳光偓閳光偓閳光偓 3. LP Positions 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 echo -e "${CYAN}[LP Positions]${NC}"
 echo "-------------------------------------------"
 
@@ -131,6 +131,6 @@ if [ "$LP_FOUND" -eq 0 ]; then
 fi
 
 echo ""
-echo -e "${GREEN}═════════════════════════════════════════════${NC}"
-echo -e "${GREEN}  Portfolio Overview Complete ✓${NC}"
-echo -e "${GREEN}═════════════════════════════════════════════${NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
+echo -e "${GREEN}  Portfolio Overview Complete 閴={NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"

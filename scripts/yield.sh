@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # ============================================================
-# pharos-defi — Pool Yield Analyzer
+# pharos-defi 閳=Pool Yield Analyzer
 # Usage: ./yield.sh [network] [pair_address]
 # ============================================================
 set -euo pipefail
 
-GREEN='\''\033[0;32m'\'''
-YELLOW='\''\033[1;33m'\'''
-CYAN='\''\033[0;36m'\'''
-BLUE='\''\033[0;34m'\'''
-RED='\''\033[0;31m'\'''
-NC='\''\033[0m'\'''
+GREEN=$'\033[0;32m'
+YELLOW=$'\033[1;33m'
+CYAN=$'\033[0;36m'
+BLUE=$'\033[0;34m'
+RED=$'\033[0;31m'
+NC=$'\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
@@ -31,9 +31,9 @@ format_eth() {
     echo "scale=4; $1 / 1000000000000000000" | bc
 }
 
-echo -e "${CYAN}═════════════════════════════════════════════${NC}"
-echo -e "${CYAN}  Pharos DeFi — Pool Yield Analyzer${NC}"
-echo -e "${CYAN}═════════════════════════════════════════════${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
+echo -e "${CYAN}  Pharos DeFi 閳=Pool Yield Analyzer${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
 echo -e "  Network: ${GREEN}$NETWORK${NC}"
 echo ""
 
@@ -68,12 +68,12 @@ if [ -n "$PAIR_INPUT" ]; then
     echo -e "  LP Supply: $TOTAL_SUPPLY"
     echo ""
 
-    # Estimate APR (qualitative — based on pool characteristics)
+    # Estimate APR (qualitative 閳=based on pool characteristics)
     echo -e "${CYAN}[Yield Analysis]${NC}"
 
     # Pool health check
     if [ "$R0" = "0" ] || [ "$R1" = "0" ]; then
-        echo -e "  ${RED}⚠ Pool is empty — no liquidity${NC}"
+        echo -e "  ${RED}閳=Pool is empty 閳=no liquidity${NC}"
         echo ""
         exit 0
     fi
@@ -89,46 +89,46 @@ if [ -n "$PAIR_INPUT" ]; then
     HAS_NATIVE=$(echo "$T0_SYMBOL $T1_SYMBOL" | grep -qE "PHRS|PROS|WPHRS|WPROS" && echo true || echo false)
 
     # Risk and yield assessment
-    echo "  ┌─────────────────────────────────────┐"
+    echo "  閳瑰备鏀㈤埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞=
     if $IS_STABLE_PAIR; then
-        echo -e "  │ ${GREEN}Pool Type:    Stable/Stable${NC}          │"
-        echo -e "  │ ${GREEN}IL Risk:      Very Low (<1%)${NC}         │"
-        echo -e "  │ ${GREEN}Est. APR:     2-5%${NC}                    │"
-        echo -e "  │ ${GREEN}Risk-Adj APR: 2-5% ✓${NC}                  │"
-        echo -e "  │ ${GREEN}Recommend:    Safe yield, low return${NC}  │"
+        echo -e "  閳=${GREEN}Pool Type:    Stable/Stable${NC}          閳=
+        echo -e "  閳=${GREEN}IL Risk:      Very Low (<1%)${NC}         閳=
+        echo -e "  閳=${GREEN}Est. APR:     2-5%${NC}                    閳=
+        echo -e "  閳=${GREEN}Risk-Adj APR: 2-5% 閴={NC}                  閳=
+        echo -e "  閳=${GREEN}Recommend:    Safe yield, low return${NC}  閳=
     elif [ "$HAS_NATIVE" = "true" ]; then
-        echo -e "  │ ${YELLOW}Pool Type:    Native/Stable${NC}           │"
-        echo -e "  │ ${YELLOW}IL Risk:      Medium (5-15%)${NC}          │"
-        echo -e "  │ ${YELLOW}Est. APR:     10-25%${NC}                  │"
-        echo -e "  │ ${YELLOW}Risk-Adj APR: 5-15%${NC}                   │"
-        echo -e "  │ ${YELLOW}Recommend:    Balanced risk/reward${NC}    │"
+        echo -e "  閳=${YELLOW}Pool Type:    Native/Stable${NC}           閳=
+        echo -e "  閳=${YELLOW}IL Risk:      Medium (5-15%)${NC}          閳=
+        echo -e "  閳=${YELLOW}Est. APR:     10-25%${NC}                  閳=
+        echo -e "  閳=${YELLOW}Risk-Adj APR: 5-15%${NC}                   閳=
+        echo -e "  閳=${YELLOW}Recommend:    Balanced risk/reward${NC}    閳=
     else
-        echo -e "  │ ${RED}Pool Type:    Volatile/Volatile${NC}         │"
-        echo -e "  │ ${RED}IL Risk:      High (15-30%+)${NC}            │"
-        echo -e "  │ ${RED}Est. APR:     20-40%${NC}                    │"
-        echo -e "  │ ${RED}Risk-Adj APR: -10 to 25%${NC}               │"
-        echo -e "  │ ${RED}Recommend:    High risk — caution${NC}       │"
+        echo -e "  閳=${RED}Pool Type:    Volatile/Volatile${NC}         閳=
+        echo -e "  閳=${RED}IL Risk:      High (15-30%+)${NC}            閳=
+        echo -e "  閳=${RED}Est. APR:     20-40%${NC}                    閳=
+        echo -e "  閳=${RED}Risk-Adj APR: -10 to 25%${NC}               閳=
+        echo -e "  閳=${RED}Recommend:    High risk 閳=caution${NC}       閳=
     fi
-    echo "  ├─────────────────────────────────────┤"
+    echo "  閳规壕鏀㈤埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞=
 
     # Fee tracking via k-value
     # k = reserve0 * reserve1
     K_CURRENT=$(echo "scale=0; $R0 * $R1" | bc)
     K_MILLIONS=$(echo "scale=2; $K_CURRENT / 1000000000000000000 / 1000000000000000000" | bc)
 
-    echo -e "  │ ${BLUE}k-value:     $(echo "scale=2; sqrt($K_CURRENT) / 10^18" | bc)${NC}"
-    echo -e "  │ ${BLUE}Price:       1 $T0_SYMBOL = $(echo "scale=4; $R1 / $R0" | bc) $T1_SYMBOL${NC}"
+    echo -e "  閳=${BLUE}k-value:     $(echo "scale=2; sqrt($K_CURRENT) / 10^18" | bc)${NC}"
+    echo -e "  閳=${BLUE}Price:       1 $T0_SYMBOL = $(echo "scale=4; $R1 / $R0" | bc) $T1_SYMBOL${NC}"
 
     # TVL approximation (rough)
     TVL_APPROX=$(echo "scale=0; sqrt($K_CURRENT) * 2" | bc)
-    echo -e "  │ ${BLUE}TVL (approx):$(echo "scale=2; $TVL_APPROX / 10^18" | bc)${NC}"
-    echo "  └─────────────────────────────────────┘"
+    echo -e "  閳=${BLUE}TVL (approx):$(echo "scale=2; $TVL_APPROX / 10^18" | bc)${NC}"
+    echo "  閳规柡鏀㈤埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞鈧埞=
 
     # IL reference
     echo ""
     echo -e "${CYAN}[Impermanent Loss Reference]${NC}"
     echo "  Price Change     IL"
-    echo "  ─────────────────────"
+    echo "  閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓"
     echo "  1.25x            0.6%"
     echo "  1.50x            2.0%"
     echo "  2x               5.7%"
@@ -200,6 +200,6 @@ else
 fi
 
 echo ""
-echo -e "${GREEN}═════════════════════════════════════════════${NC}"
-echo -e "${GREEN}  Yield Analysis Complete ✓${NC}"
-echo -e "${GREEN}═════════════════════════════════════════════${NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"
+echo -e "${GREEN}  Yield Analysis Complete 閴={NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳={NC}"

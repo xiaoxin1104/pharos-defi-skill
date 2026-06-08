@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # ============================================================
-# pharos-defi — Contract Discovery
+# pharos-defi 閳=Contract Discovery
 # Checks which DEX contracts are deployed on the target network
 # Usage: ./discover.sh [network]
 # ============================================================
 set -euo pipefail
 
-GREEN='\''\033[0;32m'\'''
-YELLOW='\''\033[1;33m'\'''
-RED='\''\033[0;31m'\'''
-CYAN='\''\033[0;36m'\'''
-NC='\''\033[0m'\'''
+GREEN=$'\033[0;32m'
+YELLOW=$'\033[1;33m'
+RED=$'\033[0;31m'
+CYAN=$'\033[0;36m'
+NC=$'\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
@@ -20,13 +20,13 @@ NETWORK="${1:-atlantic-testnet}"
 RPC_URL=$(jq -r ".networks[] | select(.name==\"$NETWORK\") | .rpcUrl" "$SKILL_DIR/assets/networks.json")
 CHAIN_ID=$(jq -r ".networks[] | select(.name==\"$NETWORK\") | .chainId" "$SKILL_DIR/assets/networks.json")
 
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
-echo -e "${CYAN}  Pharos DeFi — Contract Discovery${NC}"
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+echo -e "${CYAN}  Pharos DeFi 閳=Contract Discovery${NC}"
+echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
 echo -e "  Network: ${GREEN}$NETWORK${NC} (chain $CHAIN_ID)"
 echo ""
 
-# ─── Check DEX contracts from dex.json ─────────────────────
+# 閳光偓閳光偓閳光偓 Check DEX contracts from dex.json 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 echo -e "${CYAN}[DEX Contracts]${NC}"
 echo "  Checking from assets/dex.json..."
 echo ""
@@ -44,7 +44,7 @@ check_contract() {
     if [ "$CODE" = "0x" ] || [ ${#CODE} -le 4 ]; then
         printf "  %-20s ${RED}Not deployed${NC}        %s\n" "$NAME" "$ADDR"
     else
-        printf "  %-20s ${GREEN}✓ Deployed${NC}          %s (%d bytes)\n" "$NAME" "$ADDR" $((${#CODE} / 2 - 1))
+        printf "  %-20s ${GREEN}閴=Deployed${NC}          %s (%d bytes)\n" "$NAME" "$ADDR" $((${#CODE} / 2 - 1))
     fi
 }
 
@@ -56,7 +56,7 @@ check_contract "Multicall" "$(echo "$DEX_CONFIG" | jq -r ''.multicall'')"
 
 echo ""
 
-# ─── Check tokens from tokens.json ─────────────────────────
+# 閳光偓閳光偓閳光偓 Check tokens from tokens.json 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 echo -e "${CYAN}[Token Contracts]${NC}"
 echo "  Checking from assets/tokens.json..."
 echo ""
@@ -77,7 +77,7 @@ done
 
 echo ""
 
-# ─── Check other useful contracts ──────────────────────────
+# 閳光偓閳光偓閳光偓 Check other useful contracts 閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓閳光偓
 echo -e "${CYAN}[Other Infrastructure]${NC}"
 echo ""
 
@@ -94,9 +94,9 @@ for name in "${!SYSTEM_CONTRACTS[@]}"; do
 done
 
 echo ""
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
-echo -e "${GREEN}  Discovery Complete ✓${NC}"
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+echo -e "${GREEN}  Discovery Complete 閴={NC}"
+echo -e "${GREEN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
 echo ""
 echo -e "  ${YELLOW}Tip:${NC} When new contracts are deployed, update assets/dex.json"
 echo -e "  and assets/tokens.json, then rerun this script."

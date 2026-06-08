@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # ============================================================
-# pharos-defi — DCA Strategy Executor
+# pharos-defi 閳=DCA Strategy Executor
 # Usage: ./dca.sh <network> <token_in> <token_out> <amount> [--setup]
 # ============================================================
 set -euo pipefail
 
-GREEN='\''\033[0;32m'\'''
-YELLOW='\''\033[1;33m'\'''
-CYAN='\''\033[0;36m'\'''
-RED='\''\033[0;31m'\'''
-NC='\''\033[0m'\'''
+GREEN=$'\033[0;32m'
+YELLOW=$'\033[1;33m'
+CYAN=$'\033[0;36m'
+RED=$'\033[0;31m'
+NC=$'\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
@@ -21,9 +21,9 @@ AMOUNT_HUMAN="${4:-}"
 MODE="${5:-}"
 
 if [ "$MODE" = "--setup" ]; then
-    echo -e "${CYAN}═══════════════════════════════════════════${NC}"
-    echo -e "${CYAN}  Pharos DeFi — DCA Setup${NC}"
-    echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+    echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
+    echo -e "${CYAN}  Pharos DeFi 閳=DCA Setup${NC}"
+    echo -e "${CYAN}閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡鎰ㄦ櫜閳烘劏鏅查埡={NC}"
     echo ""
     echo -e "DCA (Dollar Cost Averaging) automates periodic buys."
     echo -e "This script will create a config file for cron/systemd."
@@ -67,8 +67,8 @@ if [ "$MODE" = "--setup" ]; then
 EOF
 
     echo ""
-    echo -e "${GREEN}═══ DCA Configuration ═══${NC}"
-    echo -e "  Buy:       ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL → $TOKEN_OUT_SYMBOL${NC}"
+    echo -e "${GREEN}閳烘劏鏅查埡=DCA Configuration 閳烘劏鏅查埡={NC}"
+    echo -e "  Buy:       ${YELLOW}$AMOUNT_HUMAN $TOKEN_IN_SYMBOL 閳=$TOKEN_OUT_SYMBOL${NC}"
     echo -e "  Frequency: ${YELLOW}$FREQ${NC}"
     echo -e "  Total:     ${YELLOW}$TOTAL_BUYS buys${NC}"
     echo -e "  Total spend: ${YELLOW}$TOTAL_SPEND $TOKEN_IN_SYMBOL${NC}"
@@ -104,7 +104,7 @@ elif [ "$MODE" = "--execute" ] || [ "$MODE" = "--exec" ]; then
         exit 0
     fi
 
-    echo -e "${CYAN}═══ DCA Buy #$((EXECUTIONS + 1))/$TOTAL ═══${NC}"
+    echo -e "${CYAN}閳烘劏鏅查埡=DCA Buy #$((EXECUTIONS + 1))/$TOTAL 閳烘劏鏅查埡={NC}"
     echo -e "  $(date -Iseconds)"
     echo ""
 
@@ -116,10 +116,10 @@ elif [ "$MODE" = "--execute" ] || [ "$MODE" = "--exec" ]; then
     jq ".executions = $NEW_COUNT" "$SKILL_DIR/dca_config.json" > "$SKILL_DIR/dca_config.tmp" && \
         mv "$SKILL_DIR/dca_config.tmp" "$SKILL_DIR/dca_config.json"
 
-    echo -e "${GREEN}DCA buy $NEW_COUNT/$TOTAL completed ✓${NC}"
+    echo -e "${GREEN}DCA buy $NEW_COUNT/$TOTAL completed 閴={NC}"
 
     if [ "$NEW_COUNT" -ge "$TOTAL" ]; then
-        echo -e "${GREEN}═══ DCA Complete! ═══${NC}"
+        echo -e "${GREEN}閳烘劏鏅查埡=DCA Complete! 閳烘劏鏅查埡={NC}"
         echo -e "All $TOTAL buys executed."
         echo -e "Run ./scripts/portfolio.sh to see results."
     fi
@@ -130,7 +130,7 @@ elif [ "$MODE" = "--status" ]; then
         exit 0
     fi
 
-    echo -e "${CYAN}═══ DCA Status ═══${NC}"
+    echo -e "${CYAN}閳烘劏鏅查埡=DCA Status 閳烘劏鏅查埡={NC}"
     TOKEN_IN_SYMBOL=$(jq -r ''.tokenIn'' "$SKILL_DIR/dca_config.json")
     TOKEN_OUT_SYMBOL=$(jq -r ''.tokenOut'' "$SKILL_DIR/dca_config.json")
     AMOUNT=$(jq -r ''.amountPerBuy'' "$SKILL_DIR/dca_config.json")
@@ -140,7 +140,7 @@ elif [ "$MODE" = "--status" ]; then
     TOTAL_SPEND=$(jq -r ''.totalSpend'' "$SKILL_DIR/dca_config.json")
     CREATED=$(jq -r ''.created'' "$SKILL_DIR/dca_config.json")
 
-    echo -e "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL → $TOKEN_OUT_SYMBOL"
+    echo -e "  Buy:       $AMOUNT $TOKEN_IN_SYMBOL 閳=$TOKEN_OUT_SYMBOL"
     echo -e "  Frequency: $FREQ"
     echo -e "  Progress:  ${GREEN}$EXECUTIONS/$TOTAL${NC} buys"
     echo -e "  Started:   $CREATED"
@@ -155,7 +155,7 @@ elif [ "$MODE" = "--status" ]; then
         echo -e "  Est. remaining spend: $REMAINING_VALUE $TOKEN_IN_SYMBOL"
     fi
 else
-    echo -e "${CYAN}Pharos DeFi — DCA Strategy${NC}"
+    echo -e "${CYAN}Pharos DeFi 閳=DCA Strategy${NC}"
     echo ""
     echo "Usage:"
     echo "  $0 --setup      Create a new DCA strategy"
