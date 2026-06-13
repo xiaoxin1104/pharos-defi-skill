@@ -1,4 +1,4 @@
-﻿{
+{
   "dexType": "UniswapV2",
   "networks": {
     "atlantic-testnet": {
@@ -41,5 +41,21 @@
     ],
     "autoDiscovery": "Run 'cast code <address> --rpc-url <rpc>' to check if a contract exists at an address. Non-empty result means deployed."
   },
-  "note": "DEX contracts are not yet deployed on Pharos (chain is in early stage as of June 2026). Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) is confirmed deployed on testnet, indicating active contract infrastructure. Router/Factory/WETH addresses are placeholders — replace with actual addresses once the Pharos DEX launches. This config follows the standard Uniswap V2 interface, ensuring immediate compatibility upon deployment."
+  "bridge": {
+    "atlantic-testnet": {
+      "contract": "0x0000000000000000000000000000000000000000",
+      "supportedChains": [
+        {"id": 1, "name": "Ethereum", "bridgeContract": "0x0000000000000000000000000000000000000000", "finalityBlocks": 64},
+        {"id": 11155111, "name": "Sepolia", "bridgeContract": "0x0000000000000000000000000000000000000000", "finalityBlocks": 12}
+      ]
+    },
+    "mainnet": {
+      "contract": "0x0000000000000000000000000000000000000000",
+      "supportedChains": [
+        {"id": 1, "name": "Ethereum", "bridgeContract": "0x0000000000000000000000000000000000000000", "finalityBlocks": 64}
+      ]
+    },
+    "note": "Bridge contracts are placeholders. Replace with official Pharos Bridge addresses once deployed."
+  },
+  "note": "DEX contracts are not yet deployed on Pharos (chain is in early stage as of June 2026). Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) is confirmed deployed on testnet, indicating active contract infrastructure. Router/Factory/WETH addresses are placeholders ? replace with actual addresses once the Pharos DEX launches. This config follows the standard Uniswap V2 interface, ensuring immediate compatibility upon deployment."
 }
